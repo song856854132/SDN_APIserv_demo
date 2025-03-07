@@ -3,3 +3,4 @@ flask
 redis
 aioredis
 asgiref
+mysql-connector-python

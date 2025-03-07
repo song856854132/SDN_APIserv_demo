@@ -16,7 +16,7 @@ FROM builder as dev-envs
 
 RUN <<EOF
 apk update
-apk add git bash
+apk add git bash mysql mysql-client
 EOF
 
 RUN <<EOF
