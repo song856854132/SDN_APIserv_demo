@@ -453,14 +453,13 @@ class DatabaseEventHandler:
 # Initialize Flask app and EventBus
 app = Flask(__name__)
 
+
 event_bus = EventBus()
 # logging.getLogger("aioredis").setLevel(logging.DEBUG)
 # default homepage
-# @app.route('/')
-# def hello():
-#     redis.incr('hits')
-#     counter = str(redis.get('hits'),'utf-8')
-#     return "This webpage has been viewed "+counter+" time(s)"
+@app.route('/')
+def hello():
+    return "Hello World!\n"
 
 @app.route('/user/delete', methods=['POST']) ### FINISH ###
 def user_delete():
@@ -515,27 +514,27 @@ def user_initialize():
     """
     # Add a flow entry and publish an event.
     data = request.json
-    event1 = Event("FLOW_DELETED", dpid=int(data['dpid'],16), ip=data['ip'])
-    event2 = Event("FLOW_INIT", dpid=int(data['dpid'],16), ip=data['ip'])
-    event3 = Event("DB_DELETED_USER", dpid=data['dpid'], ip=data['ip'])
+    # event1 = Event("FLOW_DELETED", dpid=int(data['dpid'],16), ip=data['ip'])
+    # event2 = Event("FLOW_INIT", dpid=int(data['dpid'],16), ip=data['ip'])
+    # event3 = Event("DB_DELETED_USER", dpid=data['dpid'], ip=data['ip'])
     event4 = Event("DB_INIT_USER", dpid=data['dpid'], ip=data['ip'])
     event5 = Event("DB_GET_ENTRY", dpid=data['dpid'], ip=data['ip'])
-    event6 = Event("FLOW_GET", dpid=int(data['dpid'],16), ip=data['ip'])
+    # event6 = Event("FLOW_GET", dpid=int(data['dpid'],16), ip=data['ip'])
 
-    response1 = async_to_sync(event_bus.publish)("flow_events", event1)
-    response2 = async_to_sync(event_bus.publish)("flow_events", event2)
-    response3 = async_to_sync(event_bus.publish)("database_events", event3)
+    # response1 = async_to_sync(event_bus.publish)("flow_events", event1)
+    # response2 = async_to_sync(event_bus.publish)("flow_events", event2)
+    # response3 = async_to_sync(event_bus.publish)("database_events", event3)
     response4 = async_to_sync(event_bus.publish)("database_events", event4)
 
     response_db_tmp = async_to_sync(event_bus.publish)("database_events", event5)
-    response_ryu_tmp = async_to_sync(event_bus.publish)("flow_events", event6)
+    # response_ryu_tmp = async_to_sync(event_bus.publish)("flow_events", event6)
 
     flow_num_db = len(response_db_tmp)
-    flow_num_sw = len(response_ryu_tmp[str(int(data['dpid'],16))])
-    if (flow_num_db == 2 and flow_num_sw == 2):
+    # flow_num_sw = len(response_ryu_tmp[str(int(data['dpid'],16))])
+    if (flow_num_db == 2): # and flow_num_sw == 2
         return "Success", 201
     else:
-        return "Failed", 501
+        return f"Failed: {flow_num_db}", 501
 
 @app.route('/user/book', methods=['POST']) ### FINISH ###
 def user_book():
@@ -573,7 +572,7 @@ def user_book():
     if (flow_num_db == 2 and flow_num_sw == 2):
         return "Success", 201
     else:
-        return "Failed", 501
+        return f"Failed: {flow_num_db}", 501
 
 @app.route('/user/get', methods=['POST']) ### FINISH ###
 def DB_GET_user():

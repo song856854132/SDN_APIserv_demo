@@ -3,3 +3,5 @@
 SDNcontroller.ipynb
 mysql-daata/*
 security.sql
+__pycache__
+.gitignore
