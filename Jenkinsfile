@@ -8,7 +8,7 @@ pipeline {
         VM_HOST = "10.250.28.152"
         PACKAGE_NAME = "app_package.tar.gz"
         REGISTRY = "your-registry" // e.g., docker.io/username, replace as needed
-        COMPOSE_FILE = "docker-compose.yaml"
+        COMPOSE_FILE = "compose.yaml"
     }
 
     stages {
